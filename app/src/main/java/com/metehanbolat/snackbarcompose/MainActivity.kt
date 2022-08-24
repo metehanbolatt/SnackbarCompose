@@ -40,17 +40,23 @@ fun DisplaySnackBar() {
         scaffoldState = scaffoldState,
     ) { paddingValues ->
         Box(
-            modifier = Modifier.padding(paddingValues).fillMaxSize(),
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Button(
                 onClick = {
                     coroutineScope.launch {
-                        scaffoldState.snackbarHostState.showSnackbar(
+                        val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
                             message = "This is the message",
                             actionLabel = "Okay",
                             duration = SnackbarDuration.Long
                         )
+                        when(snackBarResult) {
+                            SnackbarResult.ActionPerformed -> println("Action Performed")
+                            SnackbarResult.Dismissed -> println("Action  Dismissed")
+                        }
                     }
                 }
             ) {
